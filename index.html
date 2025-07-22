@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date - XV Años de Camila Morán</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* Chosen Palette: Sage Green & White */
+        /* Application Structure Plan: A single-page, centered-card design. The primary focus is to deliver the key information (event, name, date) in an elegant and celebratory manner. A dynamic countdown timer creates anticipation. A subtle animated particle background adds a 'wow' factor without being distracting. This structure is chosen for its directness and visual appeal, turning a simple announcement into a memorable digital experience. */
+        /* Visualization & Content Choices: The core information is presented with elegant typography (HTML/CSS). The goal is to inform and excite. A dynamic countdown (JavaScript) makes the date tangible. An animated particle system on a canvas (JavaScript) provides a sophisticated visual background. This approach is justified as it elevates the simple text into an engaging and modern digital invitation. NO SVG/Mermaid used. */
+        /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #E0E8E0 0%, #D0D8D0 100%); /* Subtle sage green gradient */
+            overflow: hidden;
+        }
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        /* Custom styles for graphic designs */
+        .card-frame {
+            border: 2px solid #A0A8A0; /* Subtle border in a darker sage tone */
+            padding: 1rem; /* Inner padding for the frame effect */
+            border-radius: 1.5rem; /* Slightly larger rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+        }
+        .text-shadow-light {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <canvas id="particle-canvas"></canvas>
+
+    <main class="content-wrapper min-h-screen flex items-center justify-center p-4">
+        <div class="text-center bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl max-w-2xl mx-auto ring-1 ring-black ring-opacity-5 card-frame">
+            
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase text-emerald-700">
+                Guarda la Fecha
+            </h2>
+
+            <h1 class="font-playfair text-5xl md:text-7xl my-4 text-emerald-900 text-shadow-light">
+                Camila Morán
+            </h1>
+
+            <p class="text-lg md:text-xl font-light text-gray-700 mb-6">
+                Celebrará sus Quince Años
+            </p>
+
+            <div class="bg-emerald-800 text-white py-3 px-6 rounded-lg inline-block mb-8">
+                <p class="text-xl md:text-2xl font-bold tracking-wider">
+                    Sábado, 24 de Enero de 2026
+                </p>
+            </div>
+
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center max-w-md mx-auto mb-8">
+                <div>
+                    <p id="days" class="text-4xl font-bold text-emerald-800">0</p>
+                    <p class="text-sm font-light text-emerald-700">Días</p>
+                </div>
+                <div>
+                    <p id="hours" class="text-4xl font-bold text-emerald-800">0</p>
+                    <p class="text-sm font-light text-emerald-700">Horas</p>
+                </div>
+                <div>
+                    <p id="minutes" class="text-4xl font-bold text-emerald-800">0</p>
+                    <p class="text-sm font-light text-emerald-700">Minutos</p>
+                </div>
+                <div>
+                    <p id="seconds" class="text-4xl font-bold text-emerald-800">0</p>
+                    <p class="text-sm font-light text-emerald-700">Segundos</p>
+                </div>
+            </div>
+
+            <button id="rsvpButton" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 hover:scale-105">
+                Confirmar Asistencia
+            </button>
+
+            <p class="mt-8 text-sm text-gray-600">
+                #CamilaCumple15
+            </p>
+
+        </div>
+    </main>
+
+    <script>
+        const targetDate = new Date('2026-01-24T00:00:00').getTime();
+
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+        const rsvpButton = document.getElementById('rsvpButton');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById('countdown').innerHTML = "<p class='col-span-4 text-2xl font-bold text-emerald-800'>¡El gran día ha llegado!</p>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.innerText = days;
+            hoursEl.innerText = hours;
+            minutesEl.innerText = minutes;
+            secondsEl.innerText = seconds;
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x;
+                this.y = y;
+                this.directionX = directionX;
+                this.directionY = directionY;
+                this.size = size;
+                this.color = color;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) {
+                    this.directionX = -this.directionX;
+                }
+                if (this.y > canvas.height || this.y < 0) {
+                    this.directionY = -this.directionY;
+                }
+                this.x += this.directionX;
+                this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * .4) - .2;
+                let directionY = (Math.random() * .4) - .2;
+                let color = 'rgba(255, 255, 255, 0.6)'; /* White particles for contrast and subtle sparkle */
+
+                particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+            }
+        }
+        
+        init();
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+            init();
+        });
+
+        // Function to open Google Form
+        rsvpButton.addEventListener('click', () => {
+            // IMPORTANT: Replace this placeholder URL with your actual Google Form URL
+            const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScrB8qZUpbmiw4yrgTfVSrR9Xf6V-hOX0TJ0ZKu5dGQZX3MAw/viewform?usp=header';
+            window.open(googleFormUrl, '_blank');
+        });
+
+    </script>
+</body>
+</html>
