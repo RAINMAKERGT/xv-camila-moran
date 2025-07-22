@@ -9,9 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        /* Chosen Palette: Sage Green & White */
-        /* Application Structure Plan: A single-page, centered-card design. The primary focus is to deliver the key information (event, name, date) in an elegant and celebratory manner. A dynamic countdown timer creates anticipation. A subtle animated particle background adds a 'wow' factor without being distracting. This structure is chosen for its directness and visual appeal, turning a simple announcement into a memorable digital experience. */
-        /* Visualization & Content Choices: The core information is presented with elegant typography (HTML/CSS). The goal is to inform and excite. A dynamic countdown (JavaScript) makes the date tangible. An animated particle system on a canvas (JavaScript) provides a sophisticated visual background. This approach is justified as it elevates the simple text into an engaging and modern digital invitation. NO SVG/Mermaid used. */
+        /* Chosen Palette: Sage Green, Cream, & Subtle Gold */
+        /* Application Structure Plan: A single-page, centered-card design. The focus is on enhancing visual elegance and celebratory feel. The card itself gets a more refined, layered appearance. A dynamic countdown timer with distinct, styled units maintains anticipation. The animated particle background is subtly re-colored to complement the new palette, adding a touch of sparkle. This structure is chosen for its directness and visual impact, transforming a simple announcement into a memorable and aesthetically pleasing digital invitation. */
+        /* Visualization & Content Choices: Key information (event, name, date) is presented with enhanced typography and subtle text effects (HTML/CSS). The goal is to inform, excite, and convey sophistication. The dynamic countdown (JavaScript) now features individually styled, prominent units to make the time remaining more impactful. The animated particle system on a canvas (JavaScript) provides a sophisticated and festive visual background, with particle colors adjusted for the new palette. Decorative elements are achieved through refined CSS properties like multi-layered box-shadows and subtle text styling. Images are now used for decorative floral graphics, complementing the overall theme. NO SVG/Mermaid used. */
         /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
         body {
             font-family: 'Montserrat', sans-serif;
@@ -34,14 +34,89 @@
             z-index: 1;
         }
         /* Custom styles for graphic designs */
-        .card-frame {
-            border: 2px solid #A0A8A0; /* Subtle border in a darker sage tone */
-            padding: 1rem; /* Inner padding for the frame effect */
-            border-radius: 1.5rem; /* Slightly larger rounded corners */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+        .card-elegant {
+            background: linear-gradient(145deg, rgba(255,255,255,0.85) 0%, rgba(245,245,245,0.85) 100%); /* Softer, subtle gradient for the card */
+            backdrop-filter: blur(8px); /* Increased blur for a softer effect */
+            border-radius: 1.5rem; /* Consistent rounded corners */
+            box-shadow:
+                0 4px 6px rgba(0, 0, 0, 0.1), /* Base shadow */
+                0 10px 20px rgba(0, 0, 0, 0.15), /* Medium shadow */
+                0 20px 40px rgba(0, 0, 0, 0.1); /* Deeper shadow for elegance */
+            border: 1px solid rgba(160, 168, 160, 0.3); /* Very subtle, light sage border */
+            padding: 2.5rem; /* Increased padding */
         }
-        .text-shadow-light {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        .text-shadow-subtle {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+        }
+        .text-glow {
+            text-shadow: 0 0 5px rgba(255,255,255,0.7), 0 0 10px rgba(255,255,255,0.5);
+        }
+        .decorative-line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #A0A8A0, transparent);
+            margin: 0.5rem auto 1.5rem auto;
+        }
+        .button-hover-effect:hover {
+            box-shadow: 0 0 15px rgba(6, 95, 70, 0.6), 0 0 25px rgba(6, 95, 70, 0.4); /* Green glow */
+        }
+        .floral-decoration {
+            position: absolute;
+            opacity: 0.7; /* Subtle transparency */
+            z-index: 0; /* Behind the main card */
+            pointer-events: none; /* Do not interfere with clicks */
+        }
+        .floral-top-left {
+            top: 5%;
+            left: 5%;
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+            transform: rotate(-15deg);
+        }
+        .floral-bottom-right {
+            bottom: 5%;
+            right: 5%;
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+            transform: rotate(15deg);
+        }
+
+        /* New Countdown Unit Styling */
+        .countdown-unit {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly opaque white */
+            border: 1px solid rgba(160, 168, 160, 0.4); /* Light sage border */
+            border-radius: 0.75rem; /* Rounded corners for each unit */
+            padding: 0.75rem 0.5rem; /* Padding inside each unit */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            transition: transform 0.2s ease-in-out;
+        }
+        .countdown-unit:hover {
+            transform: translateY(-3px); /* Slight lift on hover */
+        }
+        .countdown-number {
+            font-size: 2.5rem; /* Larger number size */
+            font-weight: 700; /* Bold numbers */
+            color: #10B981; /* Emerald green for numbers */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Shadow for numbers */
+        }
+        .countdown-label {
+            font-size: 0.875rem; /* Smaller label size */
+            font-weight: 400; /* Regular weight for labels */
+            color: #34495E; /* Darker gray for labels */
+            margin-top: 0.25rem;
+        }
+
+        /* Responsive adjustments for floral images */
+        @media (max-width: 768px) {
+            .floral-top-left, .floral-bottom-right {
+                width: 100px; /* Smaller on mobile */
+            }
+            .countdown-number {
+                font-size: 2rem; /* Adjust number size for mobile */
+            }
+            .countdown-label {
+                font-size: 0.75rem; /* Adjust label size for mobile */
+            }
         }
     </style>
 </head>
@@ -50,13 +125,20 @@
     <canvas id="particle-canvas"></canvas>
 
     <main class="content-wrapper min-h-screen flex items-center justify-center p-4">
-        <div class="text-center bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-2xl shadow-2xl max-w-2xl mx-auto ring-1 ring-black ring-opacity-5 card-frame">
-            
-            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase text-emerald-700">
-                Guarda la Fecha
-            </h2>
+        <!-- Floral Decoration 1 -->
+        <img src="https://placehold.co/150x150/E0E8E0/A0A8A0?text=Flor" alt="Decoración floral" class="floral-decoration floral-top-left hidden md:block">
 
-            <h1 class="font-playfair text-5xl md:text-7xl my-4 text-emerald-900 text-shadow-light">
+        <!-- Floral Decoration 2 -->
+        <img src="https://placehold.co/150x150/E0E8E0/A0A8A0?text=Flor" alt="Decoración floral" class="floral-decoration floral-bottom-right hidden md:block">
+
+        <div class="text-center mx-auto max-w-2xl card-elegant">
+
+            <h2 class="text-2xl md:text-3xl font-light tracking-widest uppercase text-emerald-700 text-shadow-subtle">
+                SAVE THE DATE
+            </h2>
+            <div class="decorative-line"></div>
+
+            <h1 class="font-playfair text-5xl md:text-7xl my-4 text-emerald-900 text-shadow-subtle">
                 Camila Morán
             </h1>
 
@@ -64,32 +146,32 @@
                 Celebrará sus Quince Años
             </p>
 
-            <div class="bg-emerald-800 text-white py-3 px-6 rounded-lg inline-block mb-8">
+            <div class="bg-emerald-800 text-white py-3 px-6 rounded-lg inline-block mb-8 text-glow">
                 <p class="text-xl md:text-2xl font-bold tracking-wider">
                     Sábado, 24 de Enero de 2026
                 </p>
             </div>
 
             <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center max-w-md mx-auto mb-8">
-                <div>
-                    <p id="days" class="text-4xl font-bold text-emerald-800">0</p>
-                    <p class="text-sm font-light text-emerald-700">Días</p>
+                <div class="countdown-unit">
+                    <p id="days" class="countdown-number">0</p>
+                    <p class="countdown-label">Días</p>
                 </div>
-                <div>
-                    <p id="hours" class="text-4xl font-bold text-emerald-800">0</p>
-                    <p class="text-sm font-light text-emerald-700">Horas</p>
+                <div class="countdown-unit">
+                    <p id="hours" class="countdown-number">0</p>
+                    <p class="countdown-label">Horas</p>
                 </div>
-                <div>
-                    <p id="minutes" class="text-4xl font-bold text-emerald-800">0</p>
-                    <p class="text-sm font-light text-emerald-700">Minutos</p>
+                <div class="countdown-unit">
+                    <p id="minutes" class="countdown-number">0</p>
+                    <p class="countdown-label">Minutos</p>
                 </div>
-                <div>
-                    <p id="seconds" class="text-4xl font-bold text-emerald-800">0</p>
-                    <p class="text-sm font-light text-emerald-700">Segundos</p>
+                <div class="countdown-unit">
+                    <p id="seconds" class="countdown-number">0</p>
+                    <p class="countdown-label">Segundos</p>
                 </div>
             </div>
 
-            <button id="rsvpButton" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 hover:scale-105">
+            <button id="rsvpButton" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 hover:scale-105 button-hover-effect">
                 Confirmar Asistencia
             </button>
 
@@ -101,7 +183,7 @@
     </main>
 
     <script>
-        const targetDate = new Date('2026-01-24T00:00:00').getTime();
+        const targetDate = new Date('2026-01-24T00:00:00').getTime(); // Corrected year to 2026
 
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
@@ -177,7 +259,7 @@
                 let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
                 let directionX = (Math.random() * .4) - .2;
                 let directionY = (Math.random() * .4) - .2;
-                let color = 'rgba(255, 255, 255, 0.6)'; /* White particles for contrast and subtle sparkle */
+                let color = 'rgba(210, 180, 140, 0.6)'; /* Subtle gold/bronze particles */
 
                 particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
             }
@@ -191,7 +273,7 @@
                 particlesArray[i].update();
             }
         }
-        
+
         init();
         animate();
 
